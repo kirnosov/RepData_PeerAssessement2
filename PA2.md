@@ -1,16 +1,6 @@
----
-title: "Reproducible Research: Peer Assessment 2"
-author: Nikita Kirnosov
-output: 
-  html_document:
-    keep_md: true
----
-```{r custon_knitr, echo=FALSE}
-library(knitr)
-opts_chunk$set(echo = TRUE, message = FALSE)
-knit_hooks$set(inline = function(x) {
-   if (is.numeric(x)) round(x, 2)})
-```
+# Reproducible Research: Peer Assessment 2
+Nikita Kirnosov  
+
 
 
 ## Introduction
@@ -36,7 +26,8 @@ The events in the database start in the year 1950 and end in November 2011. In t
 
 Let's start by cleaning up the environment and loading libraries
 
-```{r load_libs, results='hide'}
+
+```r
 rm(list=ls())
 library("dplyr")
 library("ggplot2")
@@ -44,7 +35,8 @@ library("ggplot2")
 
 Depending on what is already in the directory, download, unzip and/or read the file.
 
-```{r load_data, cache = TRUE}
+
+```r
 fileURL <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
 fileCSV <- "storm.csv.bz2"
 if(!file.exists(fileCSV)){
@@ -55,7 +47,8 @@ dt <- read.csv(bzfile(fileCSV), stringsAsFactors = FALSE)
 
 Define useful function:
 
-```{r}
+
+```r
 to_exp <- function(p){
         as.numeric(ifelse(tolower(p)=="k",3,
                ifelse(tolower(p)=="m",6,
@@ -67,7 +60,8 @@ to_exp <- function(p){
 
 Tidy the data set:
 
-```{r cache=TRUE}
+
+```r
 storm <- mutate(dt, 
                 year = as.numeric(format(as.Date(BGN_DATE, 
                                                      format = "%m/%d/%Y %H:%M:%S"), "%Y")),
@@ -78,19 +72,47 @@ storm <- mutate(dt,
                 crop_damage = CROPDMG * 10^to_exp(CROPDMGEXP)
                 ) %>% 
         select(-(1:dim(dt)[2]))
+```
 
+```
+## Warning in to_exp(c("K", "K", "K", "K", "K", "K", "K", "K", "K", "K",
+## "M", : NAs introduced by coercion
+```
+
+```
+## Warning in to_exp(c("", "", "", "", "", "", "", "", "", "", "", "", "", :
+## NAs introduced by coercion
+```
+
+```r
 storm <- aggregate(. ~year + event, storm, sum)
 ```
 
 Initial analysis (year cutoff)
 
-```{r}
+
+```r
 hist(storm$year,breaks=length(unique(storm$year)))
 ```
-```{r}
+
+![](PA2_files/figure-html/unnamed-chunk-3-1.png) 
+
+```r
 count(storm[(storm$year %in% (1990:1996)),],year)
 ```
 
-```{r}
-storm <- storm[storm$year > 1993,]
 ```
+## Source: local data frame [7 x 2]
+## 
+##   year   n
+## 1 1990   3
+## 2 1991   3
+## 3 1992   3
+## 4 1993 160
+## 5 1994 267
+## 6 1995 384
+## 7 1996 228
+```
+
+
+
