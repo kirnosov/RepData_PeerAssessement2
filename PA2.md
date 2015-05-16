@@ -9,7 +9,10 @@ Storms and other severe weather events can cause both public health and economic
 
 This project involves exploring the U.S. National Oceanic and Atmospheric Administration's (NOAA) storm database. This database tracks characteristics of major storms and weather events in the United States, including when and where they occur, as well as estimates of any fatalities, injuries, and property damage.
 
-
+The analysis performed for the years when the complete records available and consists 
+of consideration of the aggregate impact on population health and economy of various
+weather events. As the result, the bar plots for events associated with highest losses
+are produced and the framework for wider exploration is established.
 
 ## Data
 
@@ -52,10 +55,18 @@ dt <- read.csv(bzfile(fileCSV), stringsAsFactors = FALSE)
 
 For the purpose of this analysis, we are interested in year when the event started,
 its type, how many injuries and fatalities did it cause, and how much economical damage 
-was done. Year will be extracted from the `BGN_DATE` column, event type is given by `EVTYPE`
-field, fatalities and injuries - by `FATALITIES` and `INJURIES`, total numbers for
-property damage should be calculated as `PROPDMG` $\times$ 10$^{PROPDMGEXP}$,
-crop damage - as `CROPDMG` $\times$ 10$^{CROPDMGEXP}$.
+was done. 
+
+- **year** will be extracted from the `BGN_DATE` column, 
+
+- **event** type is given by `EVTYPE` field, 
+
+- **fatalities** and **injuries** - by `FATALITIES` and `INJURIES`, 
+
+- total numbers for **property_damage** should be calculated as `PROPDMG` $\times$ 10$^{PROPDMGEXP}$,
+
+- **crop_damage** - as `CROPDMG` $\times$ 10$^{CROPDMGEXP}$.
+
 Since powers of 10 are not always given as numbers, we should translate characters
 into numbers according to the following table:
 
